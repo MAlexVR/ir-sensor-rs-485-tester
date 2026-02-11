@@ -175,6 +175,7 @@ export function TesterTemplate() {
     <div className="min-h-screen bg-background flex flex-col">
       <PermissionsModal
         isOpen={permissionsModalOpen}
+        onOpenChange={setPermissionsModalOpen}
         onGrant={handleGrantPermissions}
         hasPorts={serial.ports.length > 0}
       />

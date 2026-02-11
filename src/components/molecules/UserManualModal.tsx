@@ -119,7 +119,7 @@ export function UserManualModal({
           onClick={() => setOpen(false)}
         >
           <div
-            className="w-full max-w-lg flex flex-col overflow-hidden rounded-2xl bg-card border border-border shadow-2xl max-h-[85vh] sm:max-h-[80vh]"
+            className="w-full max-w-lg flex flex-col overflow-hidden rounded-2xl bg-card border border-border shadow-2xl max-h-[85vh] sm:max-h-[75vh]"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -132,9 +132,10 @@ export function UserManualModal({
               </div>
               <button
                 onClick={() => setOpen(false)}
-                className="p-1 rounded-full hover:bg-muted transition-colors"
+                className="p-1.5 rounded-full bg-background/50 hover:bg-destructive/10 hover:text-destructive transition-colors border border-transparent hover:border-destructive/20"
+                aria-label="Cerrar"
               >
-                <X className="w-5 h-5 text-muted-foreground" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 

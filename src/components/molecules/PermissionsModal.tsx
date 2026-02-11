@@ -12,20 +12,19 @@ import {
 
 interface PermissionsModalProps {
   isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
   onGrant: () => Promise<void>;
   hasPorts: boolean;
 }
 
 export function PermissionsModal({
   isOpen,
+  onOpenChange,
   onGrant,
   hasPorts,
 }: PermissionsModalProps) {
-  // Local state to handle closing after successful grant if needed,
-  // but parent controls isOpen.
-
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent
         className="sm:max-w-md"
         onInteractOutside={(e) => e.preventDefault()}
@@ -68,9 +67,12 @@ export function PermissionsModal({
         </div>
 
         <div className="flex justify-end gap-2">
+          <Button variant="ghost" onClick={() => onOpenChange(false)}>
+            Cancelar
+          </Button>
           <Button
             onClick={onGrant}
-            className="w-full bg-sena-green hover:bg-sena-green-dark text-white"
+            className="bg-sena-green hover:bg-sena-green-dark text-white"
           >
             <Plug className="w-4 h-4 mr-2" />
             Buscar Dispositivos
