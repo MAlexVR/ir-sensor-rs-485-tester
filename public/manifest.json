@@ -1,0 +1,10 @@
+{
+  "name": "IR Sensor RS-485 Tester — SENA CEET",
+  "short_name": "IR-485 Tester",
+  "description": "Probador de termómetro infrarrojo RS-485 via Web Serial API",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#001018",
+  "theme_color": "#39A900",
+  "icons": []
+}

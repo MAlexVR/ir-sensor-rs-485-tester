@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Paleta institucional SENA - Modo Claro */
+    --background: 0 0% 100%;
+    --foreground: 200 50% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 200 50% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 50% 10%;
+    --primary: 100 100% 33%; /* Verde SENA #39a900 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 152 100% 23%; /* Verde Oscuro #007832 */
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 200 20% 46%;
+    --accent: 197 100% 15%; /* Navy #00304d */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 100 100% 33%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Paleta institucional SENA - Modo Oscuro (tema principal) */
+    --background: 200 60% 4%;
+    --foreground: 195 30% 92%;
+    --card: 200 55% 7%;
+    --card-foreground: 195 30% 92%;
+    --popover: 200 55% 7%;
+    --popover-foreground: 195 30% 92%;
+    --primary: 100 100% 33%; /* Verde SENA */
+    --primary-foreground: 0 0% 0%;
+    --secondary: 152 100% 23%; /* Verde Oscuro */
+    --secondary-foreground: 195 30% 92%;
+    --muted: 200 40% 14%;
+    --muted-foreground: 195 15% 55%;
+    --accent: 197 100% 15%; /* Navy */
+    --accent-foreground: 195 30% 92%;
+    --destructive: 0 62.8% 50.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 200 35% 16%;
+    --input: 200 35% 16%;
+    --ring: 100 100% 33%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground leading-relaxed;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2 {
+    text-wrap: balance;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted/50;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+
+  /* Remove number input arrows */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50;
+  }
+
+  .gradient-sena {
+    @apply bg-gradient-to-r from-sena-green to-sena-green-dark;
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .container-sena {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
+/* ═══ Display 7-segmentos ═══ */
+@font-face {
+  font-family: 'DSEG7';
+  src: url('https://cdn.jsdelivr.net/npm/dseg@0.46.0/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: swap;
+}
+
+.font-7seg {
+  font-family: 'DSEG7', 'JetBrains Mono', monospace;
+}
