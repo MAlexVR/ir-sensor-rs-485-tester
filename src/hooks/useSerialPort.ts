@@ -15,7 +15,6 @@ import type {
   LogEntry,
   TemperatureStats,
   TemperatureReading,
-  DEFAULT_CONFIG,
 } from "@/types/serial";
 import { HISTORY_MAX, READ_TIMEOUT_MS } from "@/types/serial";
 
@@ -64,6 +63,7 @@ export function useSerialPort(): UseSerialPortReturn & {
   const portRef = useRef<SerialPort | null>(null);
   const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
   const writerRef = useRef<WritableStreamDefaultWriter | null>(null);
+  const configRef = useRef<SerialConfig | null>(null);
   const readLoopActiveRef = useRef(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const bufferRef = useRef<Uint8Array>(new Uint8Array(0));
@@ -233,6 +233,7 @@ export function useSerialPort(): UseSerialPortReturn & {
         portRef.current = port;
         writerRef.current = writer;
         readerRef.current = reader;
+        configRef.current = config;
         bufferRef.current = new Uint8Array(0);
 
         setStatus("connected");
@@ -289,13 +290,28 @@ export function useSerialPort(): UseSerialPortReturn & {
   // ─── Send raw command ────────────────────────────────────
   const sendCommand = useCallback(
     async (cmd: Uint8Array) => {
-      if (!writerRef.current) {
+      if (!writerRef.current || !portRef.current) {
         addLog("No hay puerto conectado", "error");
         return;
       }
       try {
         addLog(toHex(cmd), "tx");
+        const rtsMode = configRef.current?.rtsMode ?? "none";
+        const baudRate = configRef.current?.baudRate ?? 9600;
+        if (rtsMode !== "none") {
+          // RS-485 half-duplex: activar DE antes de transmitir
+          const txActive = rtsMode === "active-high";
+          await portRef.current.setSignals({ requestToSend: txActive });
+        }
         await writerRef.current.write(cmd);
+        if (rtsMode !== "none") {
+          // Esperar que los bytes salgan físicamente (10 bits/byte)
+          const txDelayMs = Math.ceil((cmd.length * 10) / baudRate * 1000) + 5;
+          await new Promise((r) => setTimeout(r, txDelayMs));
+          // Liberar bus → adaptador vuelve a modo RX
+          const rxActive = rtsMode === "active-high";
+          await portRef.current.setSignals({ requestToSend: !rxActive });
+        }
       } catch (err) {
         addLog(`Error de envío: ${(err as Error).message}`, "error");
       }

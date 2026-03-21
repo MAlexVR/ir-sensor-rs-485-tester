@@ -18,6 +18,12 @@ export interface SerialConfig {
   parity: ParityType;
   stopBits: 1 | 2;
   flowControl: FlowControlType;
+  /** Control de dirección RS-485 vía pin RTS:
+   *  none        → sin control (adaptadores auto-switching)
+   *  active-high → RTS alto durante TX, bajo en RX
+   *  active-low  → RTS bajo durante TX, alto en RX
+   */
+  rtsMode: "none" | "active-high" | "active-low";
 }
 
 /** Estados posibles del puerto serial */
@@ -72,6 +78,7 @@ export const DEFAULT_CONFIG: SerialConfig = {
   parity: "none",
   stopBits: 1,
   flowControl: "none",
+  rtsMode: "none",
 };
 
 export const DEFAULT_ADDRESS = 0x01;

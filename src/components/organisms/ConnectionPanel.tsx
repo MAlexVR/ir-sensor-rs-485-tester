@@ -353,6 +353,23 @@ export function ConnectionPanel({
               { value: "hardware", label: "Hardware (RTS/CTS)" },
             ]}
           />
+          <SelectField
+            label="Control DE/RE (RS-485)"
+            value={config.rtsMode}
+            onChange={(v) =>
+              setConfig((p) => ({
+                ...p,
+                rtsMode: v as SerialConfig["rtsMode"],
+              }))
+            }
+            disabled={connected}
+            tip="Algunos adaptadores USB-RS485 usan el pin RTS para activar el driver de línea (DE). Probá 'RTS alto en TX' si no recibís respuesta del sensor."
+            options={[
+              { value: "none", label: "Automático ✦" },
+              { value: "active-high", label: "RTS alto en TX" },
+              { value: "active-low", label: "RTS bajo en TX" },
+            ]}
+          />
 
           <InputField
             label="Dirección del sensor (hex)"
