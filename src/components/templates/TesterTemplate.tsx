@@ -402,6 +402,7 @@ export function TesterTemplate() {
                 demoActive={demoActive}
                 ports={serial.ports}
                 connectedPort={serial.connectedPort}
+                advancedSettingsEnabled={advancedSettingsEnabled}
               />
             </div>
           </aside>
