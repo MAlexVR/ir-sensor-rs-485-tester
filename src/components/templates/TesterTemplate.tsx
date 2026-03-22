@@ -97,7 +97,7 @@ function AdvancedSettingsPanel({
           )}
           <span>
             {enabled
-              ? "Parámetros seriales desbloqueados. Podés modificar la configuración."
+              ? "Parámetros seriales desbloqueados. Puedes modificar la configuración."
               : "Parámetros seriales bloqueados. Los valores por defecto están activos (9600 8N1)."}
           </span>
         </div>
