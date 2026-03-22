@@ -478,7 +478,7 @@ export function ConnectionPanel({
           <div className="flex gap-2">
             <Button
               onClick={() => onReadOnce(parsedAddr)}
-              disabled={!canSend}
+              disabled={!canSend || !advancedSettingsEnabled}
               className="flex-1 bg-sena-green hover:bg-sena-green-dark text-white"
             >
               <Thermometer className="w-4 h-4" />

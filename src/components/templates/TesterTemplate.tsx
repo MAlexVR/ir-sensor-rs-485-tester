@@ -116,6 +116,7 @@ function AdvancedSettingsPanel({
               "Control de Flujo",
               "Control DE/RE (RS-485)",
               "Dirección del Sensor",
+              "Lectura 1× (manual)",
               "Modo Demo",
             ].map((field) => (
               <li
