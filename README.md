@@ -77,7 +77,8 @@ npm run build && npm start
 - **Gestión de Permisos**: Modal automático para solicitar acceso a puertos COM si no se detectan dispositivos autorizados.
 - **Gráficas en Tiempo Real**: Visualización del historial de temperatura.
 - **Consola RS-485**: Inspector de tramas TX/RX para depuración de protocolo.
-- **Modo Demo**: Simulación de sensor para pruebas sin hardware.
+- **Ajustes de Conexión Serial**: Tab dedicado con interruptor para habilitar/deshabilitar los parámetros de configuración serial (Baud Rate, Bits de Datos, Paridad, Bits de Parada, Control de Flujo, Control DE/RE y Dirección del Sensor). Deshabilitado por defecto para proteger la configuración de fábrica (9600 8N1).
+- **Modo Demo**: Simulación de sensor para pruebas sin hardware. Requiere activar los Ajustes de Conexión Serial primero.
 
 ## Estructura del Proyecto
 
@@ -105,7 +106,7 @@ src/
 ## Uso
 
 1.  **Permisos Iniciales**: Al abrir la app, si no hay dispositivos autorizados, aparecerá una ventana emergente. Haga clic en **"Buscar Dispositivos"** y seleccione su puerto COM (ch340, FTDI, etc.) para autorizarlo.
-2.  **Configuración**: Verifique los parámetros seriales (Default: 9600, 8N1).
+2.  **Ajustes** *(opcional)*: Por defecto los parámetros seriales están bloqueados con los valores de fábrica (9600 8N1). Si necesita cambiarlos, vaya al tab **"Ajustes"** y active el interruptor **"Configuración avanzada"**.
 3.  **Conexión**:
     - Seleccione el puerto en el dropdown "Puerto / Dispositivo".
     - El dropdown muestra el **VID/PID** del dispositivo para fácil identificación (ej. `VID:1A86 PID:7523`).
@@ -113,9 +114,13 @@ src/
 4.  **Lectura**: Use **"Leer 1×"** para lectura manual o **"Continua"** para muestreo automático.
 5.  **Visualización**: Monitoree la temperatura en tiempo real, el gráfico histórico y la consola de comandos RS-485.
 
+## Tab Ajustes
+
+El tab **"Ajustes"** (ícono de sliders) permite habilitar o deshabilitar los parámetros avanzados de conexión serial mediante un interruptor. Por defecto está **deshabilitado**, protegiendo los valores de fábrica (9600 baud, 8 bits, sin paridad, 1 stop bit). El selector de puerto y el botón Conectar siempre permanecen activos.
+
 ## Modo Demo
 
-Clic en **"Modo Demo"** para probar la interfaz sin hardware. Genera datos simulados.
+Active la **Configuración avanzada** en el tab Ajustes y luego presione **"Modo Demo"** para probar la interfaz sin hardware. Genera datos simulados.
 
 ## Créditos
 

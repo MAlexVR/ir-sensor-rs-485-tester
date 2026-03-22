@@ -142,6 +142,7 @@ interface ConnectionPanelProps {
   demoActive: boolean;
   ports: SerialPort[];
   connectedPort: SerialPort | null;
+  advancedSettingsEnabled: boolean;
 }
 
 export function ConnectionPanel({
@@ -158,6 +159,7 @@ export function ConnectionPanel({
   demoActive,
   ports,
   connectedPort,
+  advancedSettingsEnabled,
 }: ConnectionPanelProps) {
   const [config, setConfig] = useState<SerialConfig>({ ...DEFAULT_CONFIG });
   const [address, setAddress] = useState("01");
@@ -278,7 +280,7 @@ export function ConnectionPanel({
               onChange={(v) =>
                 setConfig((p) => ({ ...p, baudRate: parseInt(v) }))
               }
-              disabled={connected}
+              disabled={connected || !advancedSettingsEnabled}
               tip="Velocidad de transmisión serial. El sensor viene de fábrica en 9600 bps."
               options={[
                 { value: "4800", label: "4800" },
@@ -298,7 +300,7 @@ export function ConnectionPanel({
                   dataBits: parseInt(v) as 7 | 8,
                 }))
               }
-              disabled={connected}
+              disabled={connected || !advancedSettingsEnabled}
               tip="Cantidad de bits de datos por trama. Manual del sensor: 8 bits."
               options={[
                 { value: "7", label: "7 bits" },
@@ -311,7 +313,7 @@ export function ConnectionPanel({
               onChange={(v) =>
                 setConfig((p) => ({ ...p, parity: v as ParityType }))
               }
-              disabled={connected}
+              disabled={connected || !advancedSettingsEnabled}
               tip="Bit de verificación de paridad. Manual: ninguna (N)."
               options={[
                 { value: "none", label: "Ninguna ✦" },
@@ -328,7 +330,7 @@ export function ConnectionPanel({
                   stopBits: parseInt(v) as 1 | 2,
                 }))
               }
-              disabled={connected}
+              disabled={connected || !advancedSettingsEnabled}
               tip="Bits de parada al final de cada trama. Manual: 1 stop bit."
               options={[
                 { value: "1", label: "1 bit ✦" },
@@ -346,7 +348,7 @@ export function ConnectionPanel({
                 flowControl: v as FlowControlType,
               }))
             }
-            disabled={connected}
+            disabled={connected || !advancedSettingsEnabled}
             tip="Control de flujo hardware. RS-485 half-duplex no lo requiere."
             options={[
               { value: "none", label: "Ninguno ✦" },
@@ -362,7 +364,7 @@ export function ConnectionPanel({
                 rtsMode: v as SerialConfig["rtsMode"],
               }))
             }
-            disabled={connected}
+            disabled={connected || !advancedSettingsEnabled}
             tip="Algunos adaptadores USB-RS485 usan el pin RTS para activar el driver de línea (DE). Probá 'RTS alto en TX' si no recibís respuesta del sensor."
             options={[
               { value: "none", label: "Automático ✦" },
@@ -376,6 +378,7 @@ export function ConnectionPanel({
             value={address}
             onChange={setAddress}
             placeholder="01"
+            disabled={connected || !advancedSettingsEnabled}
             tip="Dirección hexadecimal del sensor en el bus RS-485. Fábrica: 0x01. Rango: 0x00–0xFF."
           />
 
@@ -411,6 +414,7 @@ export function ConnectionPanel({
           {/* Botón demo */}
           <Button
             onClick={onToggleDemo}
+            disabled={!advancedSettingsEnabled}
             variant={demoActive ? "destructive" : "outline"}
             className="w-full"
             size="sm"

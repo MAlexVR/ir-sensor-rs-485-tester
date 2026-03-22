@@ -8,8 +8,11 @@ import {
   FileText,
   BookOpen,
   Thermometer,
+  SlidersHorizontal,
+  Lock,
+  Unlock,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Header } from "@/components/organisms/Header";
 import { ConnectionPanel } from "@/components/organisms/ConnectionPanel";
@@ -17,14 +20,138 @@ import { TemperaturePanel } from "@/components/organisms/TemperaturePanel";
 import { WiringPanel, SpecsPanel } from "@/components/organisms/WiringPanel";
 import { PermissionsModal } from "@/components/molecules/PermissionsModal";
 import { useSerialPort } from "@/hooks/useSerialPort";
-import { serialTimestamp } from "@/lib/utils";
+import { cn, serialTimestamp } from "@/lib/utils";
 import type { LogEntry } from "@/types/serial";
+
+/* ─── Toggle switch ─── */
+function Toggle({
+  checked,
+  onChange,
+}: {
+  checked: boolean;
+  onChange: () => void;
+}) {
+  return (
+    <button
+      role="switch"
+      aria-checked={checked}
+      onClick={onChange}
+      className={cn(
+        "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer items-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        checked ? "bg-sena-green" : "bg-input",
+      )}
+    >
+      <span
+        className={cn(
+          "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform duration-200",
+          checked ? "translate-x-5" : "translate-x-0.5",
+        )}
+      />
+    </button>
+  );
+}
+
+/* ─── Advanced Settings Panel ─── */
+function AdvancedSettingsPanel({
+  enabled,
+  onToggle,
+}: {
+  enabled: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <Card className="glass">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-sm flex items-center gap-2">
+          <SlidersHorizontal className="w-4 h-4 text-muted-foreground/70" />
+          Ajustes de Conexión Serial
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-5">
+        {/* Toggle row */}
+        <div className="flex items-center justify-between gap-4 p-3 rounded-lg border border-border bg-muted/20">
+          <div className="space-y-0.5">
+            <p className="text-sm font-medium leading-none">
+              Configuración avanzada
+            </p>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">
+              Habilita la edición de parámetros de comunicación serial
+            </p>
+          </div>
+          <Toggle checked={enabled} onChange={onToggle} />
+        </div>
+
+        {/* Status banner */}
+        <div
+          className={cn(
+            "flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[11px] font-mono transition-colors",
+            enabled
+              ? "bg-sena-green/10 border border-sena-green/20 text-sena-green"
+              : "bg-muted/50 border border-border text-muted-foreground",
+          )}
+        >
+          {enabled ? (
+            <Unlock className="w-3.5 h-3.5 flex-shrink-0" />
+          ) : (
+            <Lock className="w-3.5 h-3.5 flex-shrink-0" />
+          )}
+          <span>
+            {enabled
+              ? "Parámetros seriales desbloqueados. Podés modificar la configuración."
+              : "Parámetros seriales bloqueados. Los valores por defecto están activos (9600 8N1)."}
+          </span>
+        </div>
+
+        {/* Controlled fields list */}
+        <div className="space-y-1.5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground font-mono">
+            Parámetros controlados
+          </p>
+          <ul className="space-y-1">
+            {[
+              "Baud Rate",
+              "Bits de Datos",
+              "Paridad",
+              "Bits de Parada",
+              "Control de Flujo",
+              "Control DE/RE (RS-485)",
+              "Dirección del Sensor",
+              "Modo Demo",
+            ].map((field) => (
+              <li
+                key={field}
+                className="flex items-center gap-2 text-[11px] text-muted-foreground"
+              >
+                <span
+                  className={cn(
+                    "inline-block w-1.5 h-1.5 rounded-full flex-shrink-0",
+                    enabled ? "bg-sena-green" : "bg-muted-foreground/40",
+                  )}
+                />
+                {field}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Note: always enabled */}
+        <p className="text-[10px] text-muted-foreground/60 font-mono border-t border-border pt-3">
+          El selector de puerto y el botón Conectar siempre permanecen
+          habilitados.
+        </p>
+      </CardContent>
+    </Card>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════ */
 
 export function TesterTemplate() {
   const serial = useSerialPort();
   const [activeTab, setActiveTab] = useState("control");
   const [demoActive, setDemoActive] = useState(false);
   const [permissionsModalOpen, setPermissionsModalOpen] = useState(false);
+  const [advancedSettingsEnabled, setAdvancedSettingsEnabled] = useState(false);
   const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Check permissions on mount
@@ -188,22 +315,21 @@ export function TesterTemplate() {
           onValueChange={setActiveTab}
           className="flex flex-col"
         >
-          <TabsList className="grid w-full grid-cols-4 mb-3">
-            <TabsTrigger value="control" className="text-xs">
-              <Settings2 className="w-3.5 h-3.5 mr-1" />
-              Control
+          <TabsList className="grid w-full grid-cols-5 mb-3">
+            <TabsTrigger value="control" className="text-xs px-1">
+              <Settings2 className="w-3.5 h-3.5" />
             </TabsTrigger>
-            <TabsTrigger value="monitor" className="text-xs">
-              <Activity className="w-3.5 h-3.5 mr-1" />
-              Monitor
+            <TabsTrigger value="monitor" className="text-xs px-1">
+              <Activity className="w-3.5 h-3.5" />
             </TabsTrigger>
-            <TabsTrigger value="wiring" className="text-xs">
-              <Cable className="w-3.5 h-3.5 mr-1" />
-              Cables
+            <TabsTrigger value="wiring" className="text-xs px-1">
+              <Cable className="w-3.5 h-3.5" />
             </TabsTrigger>
-            <TabsTrigger value="specs" className="text-xs">
-              <FileText className="w-3.5 h-3.5 mr-1" />
-              Specs
+            <TabsTrigger value="specs" className="text-xs px-1">
+              <FileText className="w-3.5 h-3.5" />
+            </TabsTrigger>
+            <TabsTrigger value="ajustes" className="text-xs px-1">
+              <SlidersHorizontal className="w-3.5 h-3.5" />
             </TabsTrigger>
           </TabsList>
 
@@ -222,6 +348,7 @@ export function TesterTemplate() {
               demoActive={demoActive}
               ports={serial.ports}
               connectedPort={serial.connectedPort}
+              advancedSettingsEnabled={advancedSettingsEnabled}
             />
           </TabsContent>
 
@@ -244,6 +371,13 @@ export function TesterTemplate() {
 
           <TabsContent value="specs" className="mt-0">
             <SpecsPanel />
+          </TabsContent>
+
+          <TabsContent value="ajustes" className="mt-0">
+            <AdvancedSettingsPanel
+              enabled={advancedSettingsEnabled}
+              onToggle={() => setAdvancedSettingsEnabled((v) => !v)}
+            />
           </TabsContent>
         </Tabs>
       </main>
@@ -275,7 +409,7 @@ export function TesterTemplate() {
           {/* Right column: Temperature display, chart, console */}
           <section className="col-span-12 lg:col-span-8 xl:col-span-9">
             <Tabs defaultValue="monitor" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-3 max-w-md">
+              <TabsList className="grid w-full grid-cols-4 max-w-lg">
                 <TabsTrigger value="monitor" className="text-xs">
                   <Activity className="w-3.5 h-3.5 mr-1" />
                   Monitor
@@ -287,6 +421,10 @@ export function TesterTemplate() {
                 <TabsTrigger value="specs" className="text-xs">
                   <FileText className="w-3.5 h-3.5 mr-1" />
                   Especificaciones
+                </TabsTrigger>
+                <TabsTrigger value="ajustes" className="text-xs">
+                  <SlidersHorizontal className="w-3.5 h-3.5 mr-1" />
+                  Ajustes
                 </TabsTrigger>
               </TabsList>
 
@@ -309,6 +447,13 @@ export function TesterTemplate() {
 
               <TabsContent value="specs">
                 <SpecsPanel />
+              </TabsContent>
+
+              <TabsContent value="ajustes">
+                <AdvancedSettingsPanel
+                  enabled={advancedSettingsEnabled}
+                  onToggle={() => setAdvancedSettingsEnabled((v) => !v)}
+                />
               </TabsContent>
             </Tabs>
           </section>

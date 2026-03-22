@@ -13,7 +13,7 @@ import {
   Trash2,
   AlertTriangle,
   HelpCircle,
-  X,
+  SlidersHorizontal,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -82,11 +82,18 @@ const steps = [
     text: "Fábrica: 0x01. Trama: [0x54 0x50 Dir 0xF0 NuevDir CHK]. Hasta 256 sensores en bus RS-485. El cambio es persistente.",
   },
   {
+    icon: SlidersHorizontal,
+    title: "Ajustes de conexión serial",
+    color: "text-sena-green",
+    bg: "bg-sena-green/10 border-sena-green/20",
+    text: "En el tab 'Ajustes' encontrás el interruptor de Configuración Avanzada. Por defecto está deshabilitado (valores de fábrica). Activalo para modificar Baud Rate, Bits de Datos, Paridad, Bits de Parada, Control de Flujo, Control DE/RE y Dirección del Sensor. También habilita el Modo Demo.",
+  },
+  {
     icon: Eye,
     title: "Modo demo",
     color: "text-sena-yellow",
     bg: "bg-sena-yellow/10 border-sena-yellow/20",
-    text: "Active 'Demo' para probar la interfaz sin hardware conectado. Genera datos simulados para familiarizarse con la aplicación.",
+    text: "Activá 'Configuración Avanzada' en el tab Ajustes y luego presioná 'Demo' para probar la interfaz sin hardware. Genera datos simulados para familiarizarse con la aplicación.",
   },
   {
     icon: Trash2,
