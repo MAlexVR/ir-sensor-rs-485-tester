@@ -521,12 +521,13 @@ export function ConnectionPanel({
                     setConfirmAddr(false);
                   }}
                   placeholder="02"
+                  disabled={!canSend || !advancedSettingsEnabled}
                   tip="Cambio persistente en memoria. Trama: 0x54 0x50 [Dir] 0xF0 [Nueva] [CHK]."
                 />
               </div>
               <Button
                 onClick={handleAddrChange}
-                disabled={!canSend}
+                disabled={!canSend || !advancedSettingsEnabled}
                 variant={confirmAddr ? "destructive" : "outline"}
                 size="default"
                 className="flex-shrink-0"

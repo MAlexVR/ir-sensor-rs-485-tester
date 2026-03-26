@@ -117,6 +117,7 @@ function AdvancedSettingsPanel({
               "Control DE/RE (RS-485)",
               "Dirección del Sensor",
               "Lectura 1× (manual)",
+              "Cambiar Dirección del Sensor",
               "Modo Demo",
             ].map((field) => (
               <li
