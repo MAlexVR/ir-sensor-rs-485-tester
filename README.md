@@ -1,26 +1,32 @@
 # IR Sensor RS-485 Tester — SENA CEET
 
-Aplicación web mobile-first para prueba y diagnóstico de termómetros infrarrojos industriales con interfaz RS-485, usando la **Web Serial API** directamente desde el navegador.
+![versión](https://img.shields.io/badge/versión-1.1.0-sena--green?color=39a900)
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![Tailwind](https://img.shields.io/badge/Tailwind-3-38bdf8)
+![licencia](https://img.shields.io/badge/licencia-MIT-green)
+
+Aplicación web mobile-first para prueba y diagnóstico de termómetros infrarrojos industriales con interfaz RS-485, usando la **Web Serial API** directamente desde el navegador, sin backend ni software adicional.
 
 ## Stack Tecnológico
 
 - **Next.js 15** App Router con TypeScript
-- **Tailwind CSS** + **shadcn/ui**
+- **Tailwind CSS v3** + **shadcn/ui** (Radix UI)
 - **Atomic Design** (atoms → molecules → organisms → templates)
 - **Web Serial API** (sin backend)
 - **Lucide React** (iconos)
-- **Work Sans** + **JetBrains Mono** (tipografía)
+- **Work Sans** + **JetBrains Mono** (tipografía institucional SENA)
 
 ## Paleta Institucional SENA
 
-| Color           | Hex       | Uso                        |
-| --------------- | --------- | -------------------------- |
-| Verde brillante | `#39A900` | Primario, conectado, éxito |
-| Verde oscuro    | `#007832` | Hover primario             |
-| Azul marino     | `#00304D` | Fondos, accent             |
-| Morado          | `#71277A` | Datos secundarios          |
-| Cyan            | `#50E5F9` | Datos RX, info             |
-| Amarillo        | `#FDC300` | Warnings, TX               |
+| Color           | Hex       | Uso                              |
+| --------------- | --------- | -------------------------------- |
+| Verde SENA      | `#39A900` | Primario, header, footer, éxito  |
+| Verde oscuro    | `#007832` | Hover primario                   |
+| Azul SENA       | `#00324D` | Headings, borde header/footer    |
+| Azul navy       | `#00304D` | Accent, fondos                   |
+| Amarillo        | `#FDC300` | Warnings, tramas TX              |
+| Cyan            | `#50E5F9` | Datos RX, info                   |
+| Morado          | `#71277A` | Datos secundarios                |
 
 ## Protocolo del Sensor (verificado contra datasheet)
 
@@ -73,25 +79,28 @@ npm run build && npm start
 
 ## Características Principales
 
+- **Header y Footer institucionales**: Diseño alineado con la identidad SENA CEET — logo LEPS, colores y bordes institucionales.
 - **Selector de Puertos Inteligente**: Identificación de dispositivos mediante Vendor ID (VID) y Product ID (PID).
-- **Gestión de Permisos**: Modal automático para solicitar acceso a puertos COM si no se detectan dispositivos autorizados.
+- **Gestión de Permisos**: Modal rediseñado para solicitar acceso a puertos COM con pasos claros y guía de troubleshooting.
 - **Gráficas en Tiempo Real**: Visualización del historial de temperatura.
 - **Consola RS-485**: Inspector de tramas TX/RX para depuración de protocolo.
-- **Ajustes de Conexión Serial**: Tab dedicado con interruptor para habilitar/deshabilitar los parámetros de configuración serial (Baud Rate, Bits de Datos, Paridad, Bits de Parada, Control de Flujo, Control DE/RE y Dirección del Sensor). Deshabilitado por defecto para proteger la configuración de fábrica (9600 8N1).
-- **Modo Demo**: Simulación de sensor para pruebas sin hardware. Requiere activar los Ajustes de Conexión Serial primero.
+- **Ajustes de Conexión Serial**: Tab dedicado con interruptor para habilitar/deshabilitar parámetros de configuración serial. Deshabilitado por defecto (valores de fábrica 9600 8N1).
+- **Modo Demo**: Simulación de sensor para pruebas sin hardware. Requiere activar Ajustes primero.
+- **Manual de Uso**: Modal rediseñado con secciones organizadas, tablas y ejemplos del protocolo.
 
 ## Estructura del Proyecto
 
 ```
 src/
 ├── app/
-│   ├── globals.css          # Variables CSS SENA, dark mode, 7-seg font
-│   ├── layout.tsx           # Work Sans + JetBrains Mono
+│   ├── globals.css          # Variables CSS SENA, light mode, scrollbar verde, 7-seg font
+│   ├── layout.tsx           # Work Sans + JetBrains Mono, light mode
 │   └── page.tsx             # Entry point
 ├── components/
-│   ├── atoms/               # StatusIndicator, IconWrapper
-│   ├── molecules/           # SevenSegmentDisplay, StatCard, ConsoleLog, UserManualModal
-│   ├── organisms/           # Header, ConnectionPanel, TemperaturePanel, WiringPanel
+│   ├── atoms/               # StatusIndicator, IconWrapper, Modal
+│   ├── molecules/           # SevenSegmentDisplay, StatCard, ConsoleLog,
+│   │                        # UserManualModal, PermissionsModal
+│   ├── organisms/           # Header, Footer, ConnectionPanel, TemperaturePanel, WiringPanel
 │   ├── templates/           # TesterTemplate (main orchestrator)
 │   └── ui/                  # shadcn/ui components
 ├── hooks/
@@ -105,24 +114,24 @@ src/
 
 ## Uso
 
-1.  **Permisos Iniciales**: Al abrir la app, si no hay dispositivos autorizados, aparecerá una ventana emergente. Haga clic en **"Buscar Dispositivos"** y seleccione su puerto COM (ch340, FTDI, etc.) para autorizarlo.
-2.  **Ajustes** *(opcional)*: Por defecto los parámetros seriales están bloqueados con los valores de fábrica (9600 8N1). Si necesita cambiarlos, vaya al tab **"Ajustes"** y active el interruptor **"Configuración avanzada"**.
-3.  **Conexión**:
-    - Seleccione el puerto en el dropdown "Puerto / Dispositivo".
-    - El dropdown muestra el **VID/PID** del dispositivo para fácil identificación (ej. `VID:1A86 PID:7523`).
-    - Haga clic en **"Conectar Puerto Serial"**.
-4.  **Lectura**: Use **"Leer 1×"** para lectura manual o **"Continua"** para muestreo automático.
-5.  **Visualización**: Monitoree la temperatura en tiempo real, el gráfico histórico y la consola de comandos RS-485.
+1. **Permisos Iniciales**: Al abrir la app sin dispositivos autorizados aparece el modal de permisos. Clic en **"Buscar Dispositivos"** y seleccione su puerto COM.
+2. **Ajustes** *(opcional)*: Los parámetros seriales están bloqueados por defecto (9600 8N1). Active el interruptor en el tab **"Ajustes"** para modificarlos.
+3. **Conexión**:
+   - Seleccione el puerto en el dropdown "Puerto / Dispositivo" (muestra VID/PID).
+   - Haga clic en **"Conectar Puerto Serial"**.
+4. **Lectura**: Use **"Continua"** para muestreo automático cada segundo. Active Ajustes para usar **"Leer 1×"** para lectura puntual.
+5. **Visualización**: Monitoree temperatura en tiempo real, gráfico histórico y consola TX/RX.
 
 ## Tab Ajustes
 
-El tab **"Ajustes"** (ícono de sliders) permite habilitar o deshabilitar los parámetros avanzados de conexión serial mediante un interruptor. Por defecto está **deshabilitado**, protegiendo los valores de fábrica (9600 baud, 8 bits, sin paridad, 1 stop bit). El selector de puerto y el botón Conectar siempre permanecen activos.
+El tab **"Ajustes"** controla mediante un interruptor los parámetros avanzados: Baud Rate, Bits de Datos, Paridad, Bits de Parada, Control de Flujo, Control DE/RE, Dirección del Sensor, Lectura 1×, Cambiar Dirección y Modo Demo. El selector de puerto y el botón Conectar siempre permanecen activos.
 
 ## Modo Demo
 
-Active la **Configuración avanzada** en el tab Ajustes y luego presione **"Modo Demo"** para probar la interfaz sin hardware. Genera datos simulados.
+Active la **Configuración avanzada** en Ajustes y presione **"Modo Demo"** para probar la interfaz sin hardware. Genera datos simulados con variación sinusoidal.
 
 ## Créditos
 
 **Centro de Electricidad, Electrónica y Telecomunicaciones (CEET)**  
-Servicio Nacional de Aprendizaje — SENA — Bogotá, Colombia
+Servicio Nacional de Aprendizaje — SENA — Bogotá, Colombia  
+Laboratorio de Electrónica, Potencia y Sistemas — LEPS

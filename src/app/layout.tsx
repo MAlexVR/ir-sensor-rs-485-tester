@@ -43,10 +43,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#001018" },
-  ],
+  themeColor: "#39a900",
 };
 
 export default function RootLayout({
@@ -55,7 +52,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className="dark">
+    <html lang="es">
       <body
         className={`${workSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >

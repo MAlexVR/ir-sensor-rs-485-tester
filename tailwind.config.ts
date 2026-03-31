@@ -21,6 +21,8 @@ const config: Config = {
         sena: {
           green: "#39a900",
           "green-dark": "#007832",
+          blue: "#00324D",
+          "blue-light": "#004a73",
           navy: "#00304d",
           yellow: "#fdc300",
           purple: "#71277a",

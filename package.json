@@ -1,6 +1,6 @@
 {
   "name": "ir-sensor-rs485-tester",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Probador de termómetro infrarrojo RS-485 - SENA CEET",
   "private": true,
   "scripts": {

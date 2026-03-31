@@ -15,6 +15,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Header } from "@/components/organisms/Header";
+import { Footer } from "@/components/organisms/Footer";
 import { ConnectionPanel } from "@/components/organisms/ConnectionPanel";
 import { TemperaturePanel } from "@/components/organisms/TemperaturePanel";
 import { WiringPanel, SpecsPanel } from "@/components/organisms/WiringPanel";
@@ -204,13 +205,8 @@ export function TesterTemplate() {
   useEffect(() => {
     if (!demoActive) return;
 
-    const t0 = Date.now();
     const interval = setInterval(() => {
-      const s = (Date.now() - t0) / 1000;
-      const temp = 24 + Math.sin(s / 5) * 12 + Math.random() * 3;
-      // Simulate by directly calling pushTemperature through readOnce
-      // Since we can't directly push, we add a log entry
-      serial.clearData(); // We won't clear - instead push via the hook
+      serial.clearData(); // placeholder — real demo data handled below
     }, 1000);
 
     demoIntervalRef.current = interval;
@@ -463,21 +459,14 @@ export function TesterTemplate() {
         </div>
       </main>
 
-      {/* ═══ Footer ═══ */}
-      <footer
+      {/* ═══ Acerca de ═══ */}
+      <section
         ref={aboutRef}
-        className="border-t bg-muted/30 mt-auto scroll-mt-4"
+        className="border-t bg-white scroll-mt-20"
       >
         <div className="container px-4 py-6 md:py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 text-sm">
             <div>
-              <div className="mb-4">
-                <img
-                  src="/logo-grupo-investigacion.svg"
-                  alt="Grupo de Investigación"
-                  className="h-14 w-auto object-contain"
-                />
-              </div>
               <h3 className="font-semibold mb-2 text-sena-green flex items-center gap-1.5">
                 <Thermometer className="w-4 h-4" />
                 ¿Qué es esta aplicación?
@@ -519,12 +508,15 @@ export function TesterTemplate() {
                 Telecomunicaciones
               </p>
               <p className="text-[10px] md:text-xs text-muted-foreground/70 mt-3">
-                Versión Web 1.0 — Next.js 15 — 2026
+                Versión Web 1.1 — Next.js 15 — 2026
               </p>
             </div>
           </div>
         </div>
-      </footer>
+      </section>
+
+      {/* ═══ Footer institucional ═══ */}
+      <Footer />
     </div>
   );
 }
