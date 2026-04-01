@@ -32,7 +32,7 @@ export function Header({ onAboutClick }: HeaderProps) {
           </div>
           <div className="hidden sm:block w-px h-8 bg-white/30 shrink-0" />
           <div className="flex flex-col truncate min-w-0">
-            <h1 className="text-sm md:text-base font-bold text-white leading-tight tracking-tight truncate">
+            <h1 className="text-sm md:text-lg font-bold text-white leading-tight tracking-tight truncate">
               IR Sensor RS-485 Tester
             </h1>
             <p className="text-[10px] sm:text-xs text-white/80 hidden md:block mt-0.5 font-medium truncate">
@@ -43,7 +43,7 @@ export function Header({ onAboutClick }: HeaderProps) {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-2 shrink-0">
-          <span className="text-[10px] font-medium bg-white/10 text-white/90 px-2 py-1 rounded-full border border-white/20 select-none">
+          <span className="text-[10px] font-medium bg-white/10 text-white/90 px-2 py-1 rounded-full mr-2 border border-white/20 select-none">
             v1.1
           </span>
           <UserManualModal triggerClassName="flex items-center gap-1.5 px-3 py-2 h-auto rounded-lg text-sm text-white/90 hover:text-white hover:bg-white/10 transition-colors font-medium border border-transparent">
@@ -79,7 +79,7 @@ export function Header({ onAboutClick }: HeaderProps) {
       {menuOpen && (
         <div
           id="mobile-menu"
-          className="md:hidden border-t border-white/20 mt-3 pt-2"
+          className="md:hidden bg-sena-green border-t border-white/20 mt-3 pt-2 animate-in slide-in-from-top-2"
         >
           <div className="space-y-1">
             <UserManualModal triggerClassName="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-white/90 hover:bg-white/10 transition-colors h-auto">
