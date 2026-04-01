@@ -159,7 +159,7 @@ export function TemperaturePanel({
     <div className="space-y-3 md:space-y-4">
       {/* ─── Display temperatura ─── */}
       <Card className="overflow-hidden border-sena-green/20 bg-card">
-        <CardHeader className="pb-2 border-b border-sena-green/10">
+        <CardHeader className="pb-2 bg-muted/50 border-b border-border/50 rounded-t-xl">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-sena-blue">
               <Activity className="w-4 h-4 text-sena-green" />
@@ -238,7 +238,7 @@ export function TemperaturePanel({
 
       {/* ─── Historial gráfico ─── */}
       <Card className="border-sena-green/20 bg-card">
-        <CardHeader className="pb-2 border-b border-sena-green/10">
+        <CardHeader className="pb-2 bg-muted/50 border-b border-border/50 rounded-t-xl">
           <CardTitle className="text-sm flex items-center gap-2 text-sena-blue">
             <Activity className="w-4 h-4 text-sena-green" />
             Historial de Temperatura
@@ -251,7 +251,7 @@ export function TemperaturePanel({
 
       {/* ─── Consola RS-485 ─── */}
       <Card className="border-sena-green/20 bg-card">
-        <CardHeader className="pb-2 border-b border-sena-green/10">
+        <CardHeader className="pb-2 bg-muted/50 border-b border-border/50 rounded-t-xl">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2 text-sena-blue">
               <Radio className="w-4 h-4 text-sena-green" />

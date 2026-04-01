@@ -61,7 +61,7 @@ function SelectField({
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-center gap-1.5">
-        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground font-mono">
+        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
           {label}
         </label>
         {tip && <FieldTip text={tip} />}
@@ -105,7 +105,7 @@ function InputField({
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-center gap-1.5">
-        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground font-mono">
+        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
           {label}
         </label>
         {tip && <FieldTip text={tip} />}
@@ -210,7 +210,7 @@ export function ConnectionPanel({
       {/* ─── Conexión serial ─── */}
 
       <Card className="glass">
-        <CardHeader className="pb-2">
+        <CardHeader className="pb-2 bg-muted/50 border-b border-border/50 rounded-t-xl">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2">
               <StatusIndicator status={demoActive ? "connected" : status} />
@@ -382,7 +382,7 @@ export function ConnectionPanel({
             tip="Dirección hexadecimal del sensor en el bus RS-485. Fábrica: 0x01. Rango: 0x00–0xFF."
           />
 
-          <p className="text-[9px] text-muted-foreground/70 font-mono bg-muted/50 p-2 rounded border border-border/50">
+          <p className="text-[9px] text-muted-foreground/70 bg-muted/50 p-2 rounded border border-border/50">
             <Info className="inline w-3 h-3 mr-1 -mt-0.5" />
             Al hacer clic en <strong>Conectar</strong>, el navegador abrirá una
             ventana emergente para seleccionar el puerto COM.
@@ -443,7 +443,7 @@ export function ConnectionPanel({
 
       {/* ─── Comandos ─── */}
       <Card className="glass">
-        <CardHeader className="pb-3">
+        <CardHeader className="pb-3 bg-muted/50 border-b border-border/50 rounded-t-xl">
           <CardTitle className="text-sm flex items-center gap-2">
             <Send className="w-4 h-4 text-sena-yellow" />
             Comandos
@@ -508,7 +508,7 @@ export function ConnectionPanel({
 
           {/* Cambiar dirección */}
           <div className="space-y-2">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground font-mono">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
               Cambiar dirección del sensor
             </p>
             <div className="flex gap-2 items-end">

@@ -62,7 +62,7 @@ function AdvancedSettingsPanel({
 }) {
   return (
     <Card className="glass">
-      <CardHeader className="pb-3">
+      <CardHeader className="pb-3 bg-muted/50 border-b border-border/50 rounded-t-xl">
         <CardTitle className="text-sm flex items-center gap-2">
           <SlidersHorizontal className="w-4 h-4 text-muted-foreground/70" />
           Ajustes de Conexión Serial
@@ -105,7 +105,7 @@ function AdvancedSettingsPanel({
 
         {/* Controlled fields list */}
         <div className="space-y-1.5">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground font-mono">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             Parámetros controlados
           </p>
           <ul className="space-y-1">
@@ -488,12 +488,12 @@ export function TesterTemplate() {
                 Protocolo del Sensor
               </h3>
               <ul className="text-xs text-muted-foreground space-y-1.5">
-                <li>• Header: <code className="font-mono text-sena-cyan">0x54 0x50</code> (propietario, NO Modbus)</li>
-                <li>• Lectura: cmd <code className="font-mono text-sena-cyan">0xF1</code> → T = (DH×256+DL)/10 °C</li>
-                <li>• Dirección: cmd <code className="font-mono text-sena-cyan">0xF0</code> → cambio persistente</li>
-                <li>• Checksum: Σ bytes <code className="font-mono text-sena-cyan">& 0xFF</code></li>
-                <li>• Serial: <code className="font-mono text-sena-cyan">9600 baud, 8N1</code> (fábrica)</li>
-                <li>• Bus: hasta 256 sensores, dir. default <code className="font-mono text-sena-cyan">0x01</code></li>
+                <li>• Header: <code className="font-mono text-sena-blue">0x54 0x50</code> (propietario, NO Modbus)</li>
+                <li>• Lectura: cmd <code className="font-mono text-sena-blue">0xF1</code> → T = (DH×256+DL)/10 °C</li>
+                <li>• Dirección: cmd <code className="font-mono text-sena-blue">0xF0</code> → cambio persistente</li>
+                <li>• Checksum: Σ bytes <code className="font-mono text-sena-blue">& 0xFF</code></li>
+                <li>• Serial: <code className="font-mono text-sena-blue">9600 baud, 8N1</code> (fábrica)</li>
+                <li>• Bus: hasta 256 sensores, dir. default <code className="font-mono text-sena-blue">0x01</code></li>
               </ul>
             </div>
             <div>

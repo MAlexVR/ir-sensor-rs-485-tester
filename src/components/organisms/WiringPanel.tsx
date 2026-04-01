@@ -200,7 +200,7 @@ function SpecLine({
 }) {
   return (
     <div className="flex justify-between items-center py-1.5 border-b border-border/30 last:border-b-0">
-      <span className="text-xs text-muted-foreground font-mono">{label}</span>
+      <span className="text-xs text-muted-foreground">{label}</span>
       <span
         className={cn(
           "text-sm font-semibold font-mono",
@@ -219,7 +219,7 @@ export function WiringPanel() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
       <Card className="glass">
-        <CardHeader className="pb-2">
+        <CardHeader className="pb-2 bg-muted/50 border-b border-border/50 rounded-t-xl">
           <CardTitle className="text-sm flex items-center gap-2">
             <Cable className="w-4 h-4 text-sena-cyan" />
             Diagrama de Conexión
@@ -231,7 +231,7 @@ export function WiringPanel() {
       </Card>
 
       <Card className="glass">
-        <CardHeader className="pb-2">
+        <CardHeader className="pb-2 bg-muted/50 border-b border-border/50 rounded-t-xl">
           <CardTitle className="text-sm flex items-center gap-2">
             <Zap className="w-4 h-4 text-sena-yellow" />
             Identificación de Cables
@@ -256,7 +256,7 @@ export function WiringPanel() {
                 className="w-4 h-4 rounded flex-shrink-0"
                 style={{ background: w.c }}
               />
-              <span className="text-xs text-muted-foreground font-mono">
+              <span className="text-xs text-muted-foreground">
                 <strong style={{ color: w.c }}>{w.l}</strong> → {w.f}
               </span>
             </div>
@@ -265,7 +265,7 @@ export function WiringPanel() {
           <div className="mt-3 p-3 rounded-lg bg-sena-yellow/5 border border-sena-yellow/20">
             <div className="flex items-center gap-2 mb-1">
               <AlertTriangle className="w-3.5 h-3.5 text-sena-yellow" />
-              <span className="text-[10px] font-bold text-sena-yellow font-mono">
+              <span className="text-[10px] font-bold text-sena-yellow">
                 IMPORTANTE
               </span>
             </div>
@@ -285,7 +285,7 @@ export function SpecsPanel() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
       <Card className="glass">
-        <CardHeader className="pb-2">
+        <CardHeader className="pb-2 bg-muted/50 border-b border-border/50 rounded-t-xl">
           <CardTitle className="text-sm flex items-center gap-2">
             <Thermometer className="w-4 h-4 text-sena-green" />
             Parámetros de Medición
@@ -303,7 +303,7 @@ export function SpecsPanel() {
       </Card>
 
       <Card className="glass">
-        <CardHeader className="pb-2">
+        <CardHeader className="pb-2 bg-muted/50 border-b border-border/50 rounded-t-xl">
           <CardTitle className="text-sm flex items-center gap-2">
             <Settings2 className="w-4 h-4 text-sena-purple" />
             Características Físicas
@@ -323,7 +323,7 @@ export function SpecsPanel() {
       </Card>
 
       <Card className="glass">
-        <CardHeader className="pb-2">
+        <CardHeader className="pb-2 bg-muted/50 border-b border-border/50 rounded-t-xl">
           <CardTitle className="text-sm flex items-center gap-2">
             <Radio className="w-4 h-4 text-sena-cyan" />
             Comunicación RS-485
@@ -343,7 +343,7 @@ export function SpecsPanel() {
       </Card>
 
       <Card className="glass">
-        <CardHeader className="pb-2">
+        <CardHeader className="pb-2 bg-muted/50 border-b border-border/50 rounded-t-xl">
           <CardTitle className="text-sm flex items-center gap-2">
             <Cpu className="w-4 h-4 text-sena-yellow" />
             Requisitos del Sistema
@@ -381,7 +381,7 @@ export function SpecsPanel() {
                 className={cn("w-4 h-4 flex-shrink-0 mt-0.5", item.c)}
               />
               <div>
-                <p className={cn("text-xs font-semibold font-mono", item.c)}>
+                <p className={cn("text-xs font-semibold", item.c)}>
                   {item.t}
                 </p>
                 <p className="text-[11px] text-muted-foreground">{item.d}</p>
