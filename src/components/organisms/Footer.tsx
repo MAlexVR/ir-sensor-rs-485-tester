@@ -28,7 +28,7 @@ export function Footer() {
         {/* Right — Texto institucional */}
         <div className="text-center xl:text-right mt-2 md:mt-0 flex-1">
           <p className="text-sm md:text-base font-semibold tracking-wide text-white">
-            &copy; {currentYear} Servicio Nacional de Aprendizaje — SENA
+            &copy; {currentYear} Servicio Nacional de Aprendizaje - SENA
           </p>
           <p className="text-xs md:text-sm text-white/90 mt-1 leading-snug">
             Centro de Electricidad, Electrónica y Telecomunicaciones (CEET)
