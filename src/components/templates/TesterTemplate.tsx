@@ -155,9 +155,8 @@ export function TesterTemplate() {
   const [demoActive, setDemoActive] = useState(false);
   const [permissionsModalOpen, setPermissionsModalOpen] = useState(false);
   const [advancedSettingsEnabled, setAdvancedSettingsEnabled] = useState(false);
-  const demoIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const userDismissedModal = useRef(false);
 
-  // Check permissions on mount
   // Check permissions on mount
   useEffect(() => {
     // Show modal only if:
@@ -165,11 +164,13 @@ export function TesterTemplate() {
     // 2. Initial ports check has finished
     // 3. No ports are authorized (list is empty)
     // 4. Demo mode is NOT active
+    // 5. User has not explicitly dismissed the modal
     if (
       serial.isSupported &&
       serial.hasLoadedInitialPorts &&
       serial.ports.length === 0 &&
-      !demoActive
+      !demoActive &&
+      !userDismissedModal.current
     ) {
       setPermissionsModalOpen(true);
     } else {
@@ -183,41 +184,48 @@ export function TesterTemplate() {
   ]);
 
   const handleGrantPermissions = async () => {
-    await serial.requestAuth();
-    // Modal will close automatically via effect when ports.length > 0
+    try {
+      await serial.requestAuth();
+      // Modal will close automatically via effect when ports.length > 0.
+      // Reset dismissed flag so the modal can re-appear if ports are later removed.
+      userDismissedModal.current = false;
+    } catch {
+      // User cancelled the browser dialog — leave modal open
+    }
   };
   const aboutRef = useRef<HTMLElement>(null);
 
   // ─── Demo mode ───────────────────────────────────────────
   const toggleDemo = useCallback(() => {
-    if (demoActive) {
-      if (demoIntervalRef.current) {
-        clearInterval(demoIntervalRef.current);
-        demoIntervalRef.current = null;
-      }
-      setDemoActive(false);
-    } else {
-      setDemoActive(true);
-    }
-  }, [demoActive]);
-
-  // Generate demo data when active
-  useEffect(() => {
-    if (!demoActive) return;
-
-    const interval = setInterval(() => {
-      serial.clearData(); // placeholder — real demo data handled below
-    }, 1000);
-
-    demoIntervalRef.current = interval;
-    return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty deps - we handle this differently
+    setDemoActive(v => !v);
+  }, []);
 
   // Better demo implementation using a separate state
   const [demoTemp, setDemoTemp] = useState<number | null>(null);
-  const [demoStats, setDemoStats] = useState(serial.stats);
+  const [demoStats, setDemoStats] = useState({
+    min: null as number | null,
+    max: null as number | null,
+    avg: null as number | null,
+    count: 0,
+    history: [] as { temp: number; ts: number }[],
+  });
   const [demoLogs, setDemoLogs] = useState<LogEntry[]>([]);
+  const demoAccRef = useRef({ count: 0, sum: 0, min: null as number | null, max: null as number | null, history: [] as { temp: number; ts: number }[] });
+
+  const handleDemoClearData = useCallback(() => {
+    setDemoStats({ min: null, max: null, avg: null, count: 0, history: [] });
+    setDemoTemp(null);
+    demoAccRef.current = { count: 0, sum: 0, min: null, max: null, history: [] };
+  }, []);
+
+  const handleDemoClearLogs = useCallback(() => setDemoLogs([]), []);
+
+  const handleDemoClearAll = useCallback(() => {
+    setDemoStats({ min: null, max: null, avg: null, count: 0, history: [] });
+    setDemoTemp(null);
+    setDemoLogs([]);
+    demoAccRef.current = { count: 0, sum: 0, min: null, max: null, history: [] };
+  }, []);
 
   useEffect(() => {
     if (!demoActive) {
@@ -233,32 +241,29 @@ export function TesterTemplate() {
       return;
     }
 
+    demoAccRef.current = { count: 0, sum: 0, min: null, max: null, history: [] };
     const t0 = Date.now();
-    let count = 0;
-    let min: number | null = null;
-    let max: number | null = null;
-    let sum = 0;
-    const history: { temp: number; ts: number }[] = [];
 
     const iv = setInterval(() => {
       const s = (Date.now() - t0) / 1000;
       const temp = parseFloat(
         (24 + Math.sin(s / 5) * 12 + Math.random() * 3).toFixed(1),
       );
-      count++;
-      sum += temp;
-      min = min === null ? temp : Math.min(min, temp);
-      max = max === null ? temp : Math.max(max, temp);
-      history.push({ temp, ts: Date.now() });
-      if (history.length > 100) history.shift();
+      const acc = demoAccRef.current;
+      acc.count++;
+      acc.sum += temp;
+      acc.min = acc.min === null ? temp : Math.min(acc.min, temp);
+      acc.max = acc.max === null ? temp : Math.max(acc.max, temp);
+      acc.history.push({ temp, ts: Date.now() });
+      if (acc.history.length > 100) acc.history.shift();
 
       setDemoTemp(temp);
       setDemoStats({
-        min,
-        max,
-        avg: sum / count,
-        count,
-        history: [...history],
+        min: acc.min,
+        max: acc.max,
+        avg: acc.sum / acc.count,
+        count: acc.count,
+        history: [...acc.history],
       });
 
       const ts = serialTimestamp();
@@ -300,33 +305,36 @@ export function TesterTemplate() {
     <div className="min-h-screen bg-background flex flex-col">
       <PermissionsModal
         isOpen={permissionsModalOpen}
-        onOpenChange={setPermissionsModalOpen}
+        onOpenChange={(open) => {
+          if (!open) userDismissedModal.current = true;
+          setPermissionsModalOpen(open);
+        }}
         onGrant={handleGrantPermissions}
-        hasPorts={serial.ports.length > 0}
       />
       <Header onAboutClick={scrollToAbout} />
 
+      <main className="flex-1">
       {/* ═══ Mobile Layout: Tabs ═══ */}
-      <main className="flex-1 container px-3 py-3 md:hidden">
+      <div className="container px-3 py-3 md:hidden">
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
           className="flex flex-col"
         >
           <TabsList className="grid w-full grid-cols-5 mb-3">
-            <TabsTrigger value="control" className="text-xs px-1">
+            <TabsTrigger value="control" className="text-xs px-1" aria-label="Control">
               <Settings2 className="w-3.5 h-3.5" />
             </TabsTrigger>
-            <TabsTrigger value="monitor" className="text-xs px-1">
+            <TabsTrigger value="monitor" className="text-xs px-1" aria-label="Monitor">
               <Activity className="w-3.5 h-3.5" />
             </TabsTrigger>
-            <TabsTrigger value="wiring" className="text-xs px-1">
+            <TabsTrigger value="wiring" className="text-xs px-1" aria-label="Cableado">
               <Cable className="w-3.5 h-3.5" />
             </TabsTrigger>
-            <TabsTrigger value="specs" className="text-xs px-1">
+            <TabsTrigger value="specs" className="text-xs px-1" aria-label="Especificaciones">
               <FileText className="w-3.5 h-3.5" />
             </TabsTrigger>
-            <TabsTrigger value="ajustes" className="text-xs px-1">
+            <TabsTrigger value="ajustes" className="text-xs px-1" aria-label="Ajustes">
               <SlidersHorizontal className="w-3.5 h-3.5" />
             </TabsTrigger>
           </TabsList>
@@ -355,11 +363,9 @@ export function TesterTemplate() {
               temperature={currentTemp}
               stats={currentStats}
               logs={currentLogs}
-              onClearData={demoActive ? () => {} : serial.clearData}
-              onClearLogs={
-                demoActive ? () => setDemoLogs([]) : serial.clearLogs
-              }
-              onClearAll={demoActive ? () => {} : serial.clearAll}
+              onClearData={demoActive ? handleDemoClearData : serial.clearData}
+              onClearLogs={demoActive ? handleDemoClearLogs : serial.clearLogs}
+              onClearAll={demoActive ? handleDemoClearAll : serial.clearAll}
             />
           </TabsContent>
 
@@ -378,10 +384,10 @@ export function TesterTemplate() {
             />
           </TabsContent>
         </Tabs>
-      </main>
+      </div>
 
       {/* ═══ Desktop Layout: 2 columns ═══ */}
-      <main className="hidden md:block flex-1 container py-4 lg:py-6">
+      <div className="hidden md:block container py-4 lg:py-6">
         <div className="grid grid-cols-12 gap-4 lg:gap-6">
           {/* Left column: Connection + Commands */}
           <aside className="col-span-12 lg:col-span-4 xl:col-span-3">
@@ -407,7 +413,7 @@ export function TesterTemplate() {
 
           {/* Right column: Temperature display, chart, console */}
           <section className="col-span-12 lg:col-span-8 xl:col-span-9">
-            <Tabs defaultValue="monitor" className="space-y-4">
+            <Tabs value={activeTab === "control" ? "monitor" : activeTab} onValueChange={setActiveTab} className="space-y-4">
               <TabsList className="grid w-full grid-cols-4 max-w-lg">
                 <TabsTrigger value="monitor" className="text-xs">
                   <Activity className="w-3.5 h-3.5 mr-1" />
@@ -432,11 +438,9 @@ export function TesterTemplate() {
                   temperature={currentTemp}
                   stats={currentStats}
                   logs={currentLogs}
-                  onClearData={demoActive ? () => {} : serial.clearData}
-                  onClearLogs={
-                    demoActive ? () => setDemoLogs([]) : serial.clearLogs
-                  }
-                  onClearAll={demoActive ? () => {} : serial.clearAll}
+                  onClearData={demoActive ? handleDemoClearData : serial.clearData}
+                  onClearLogs={demoActive ? handleDemoClearLogs : serial.clearLogs}
+                  onClearAll={demoActive ? handleDemoClearAll : serial.clearAll}
                 />
               </TabsContent>
 
@@ -457,8 +461,7 @@ export function TesterTemplate() {
             </Tabs>
           </section>
         </div>
-      </main>
-
+      </div>
       {/* ═══ Acerca de ═══ */}
       <section
         ref={aboutRef}
@@ -514,6 +517,8 @@ export function TesterTemplate() {
           </div>
         </div>
       </section>
+
+      </main>
 
       {/* ═══ Footer institucional ═══ */}
       <Footer />

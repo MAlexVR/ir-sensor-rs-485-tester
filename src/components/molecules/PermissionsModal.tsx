@@ -1,21 +1,38 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { Plug, AlertTriangle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/atoms/Modal";
+
+const STEPS: ReactNode[] = [
+  <>
+    Haga clic en{" "}
+    <strong className="text-gray-700">"Buscar Dispositivos"</strong>
+    .
+  </>,
+  <>
+    Seleccione su conversor USB-RS485 (ej.{" "}
+    <em>USB-Serial Controller</em>, <em>CH340</em>, <em>FTDI</em>)
+    en la ventana emergente.
+  </>,
+  <>
+    Haga clic en{" "}
+    <strong className="text-gray-700">"Conectar"</strong> en esa
+    ventana.
+  </>,
+];
 
 interface PermissionsModalProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   onGrant: () => Promise<void>;
-  hasPorts: boolean;
 }
 
 export function PermissionsModal({
   isOpen,
   onOpenChange,
   onGrant,
-  hasPorts,
 }: PermissionsModalProps) {
   return (
     <Modal
@@ -56,24 +73,8 @@ export function PermissionsModal({
             <Info className="h-4 w-4 text-sena-green" /> Pasos
           </h3>
           <ol className="ml-6 space-y-2">
-            {[
-              <>
-                Haga clic en{" "}
-                <strong className="text-gray-700">"Buscar Dispositivos"</strong>
-                .
-              </>,
-              <>
-                Seleccione su conversor USB-RS485 (ej.{" "}
-                <em>USB-Serial Controller</em>, <em>CH340</em>, <em>FTDI</em>)
-                en la ventana emergente.
-              </>,
-              <>
-                Haga clic en{" "}
-                <strong className="text-gray-700">"Conectar"</strong> en esa
-                ventana.
-              </>,
-            ].map((step, i) => (
-              <li key={i} className="flex items-start gap-3">
+            {STEPS.map((step, i) => (
+              <li key={`step-${i}`} className="flex items-start gap-3">
                 <span className="flex-shrink-0 w-5 h-5 rounded-full bg-sena-green/10 text-sena-green text-xs font-bold flex items-center justify-center mt-0.5">
                   {i + 1}
                 </span>

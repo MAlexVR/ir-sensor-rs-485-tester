@@ -88,7 +88,7 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        pulse: {
+        "opacity-pulse": {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.5" },
         },
@@ -96,12 +96,17 @@ const config: Config = {
           "0%, 100%": { filter: "brightness(1)" },
           "50%": { filter: "brightness(1.3)" },
         },
+        "modal": {
+          from: { opacity: "0", transform: "translate(-50%, -48%) scale(0.96)" },
+          to:   { opacity: "1", transform: "translate(-50%, -50%) scale(1)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "pulse-slow": "opacity-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "segment-glow": "segment-glow 2s ease-in-out infinite",
+        "modal": "modal 0.15s ease-out both",
       },
     },
   },

@@ -38,7 +38,7 @@ export function Modal({
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50" />
         <Dialog.Content
-          className={`fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100%-2rem)] ${widthClass[maxWidth]} max-h-[85vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-modal`}
+          className={`fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] w-[calc(100%-2rem)] ${widthClass[maxWidth]} max-h-[85vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-modal`}
         >
           {description && (
             <Dialog.Description className="sr-only">
