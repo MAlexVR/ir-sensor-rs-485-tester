@@ -85,7 +85,7 @@ function AdvancedSettingsPanel({
         {/* Status banner */}
         <div
           className={cn(
-            "flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[11px] font-mono transition-colors",
+            "flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[11px] transition-colors",
             enabled
               ? "bg-sena-green/10 border border-sena-green/20 text-sena-green"
               : "bg-muted/50 border border-border text-muted-foreground",
@@ -138,7 +138,7 @@ function AdvancedSettingsPanel({
         </div>
 
         {/* Note: always enabled */}
-        <p className="text-[10px] text-muted-foreground/60 font-mono border-t border-border pt-3">
+        <p className="text-[10px] text-muted-foreground/60 border-t border-border pt-3">
           El selector de puerto y el botón Conectar siempre permanecen
           habilitados.
         </p>
