@@ -487,14 +487,14 @@ export function TesterTemplate() {
                 <BookOpen className="w-4 h-4" />
                 Protocolo del Sensor
               </h3>
-              <div className="text-xs text-muted-foreground space-y-1.5 font-mono">
-                <p>• Header: 0x54 0x50 (propietario, NO Modbus)</p>
-                <p>• Lectura: cmd 0xF1 → T = (DH×256+DL)/10 °C</p>
-                <p>• Dirección: cmd 0xF0 → cambio persistente</p>
-                <p>• Checksum: Σ bytes & 0xFF</p>
-                <p>• Serial: 9600 baud, 8N1 (fábrica)</p>
-                <p>• Bus: hasta 256 sensores, dir. default 0x01</p>
-              </div>
+              <ul className="text-xs text-muted-foreground space-y-1.5">
+                <li>• Header: <code className="font-mono text-sena-cyan">0x54 0x50</code> (propietario, NO Modbus)</li>
+                <li>• Lectura: cmd <code className="font-mono text-sena-cyan">0xF1</code> → T = (DH×256+DL)/10 °C</li>
+                <li>• Dirección: cmd <code className="font-mono text-sena-cyan">0xF0</code> → cambio persistente</li>
+                <li>• Checksum: Σ bytes <code className="font-mono text-sena-cyan">& 0xFF</code></li>
+                <li>• Serial: <code className="font-mono text-sena-cyan">9600 baud, 8N1</code> (fábrica)</li>
+                <li>• Bus: hasta 256 sensores, dir. default <code className="font-mono text-sena-cyan">0x01</code></li>
+              </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-2 text-sena-green">Créditos</h3>

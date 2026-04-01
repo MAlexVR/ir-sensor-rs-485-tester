@@ -15,9 +15,9 @@ const typeColors: Record<LogEntry["type"], string> = {
   tx: "text-sena-yellow",
   rx: "text-sena-cyan",
   success: "text-sena-green",
-  error: "text-destructive",
-  warning: "text-sena-yellow",
-  info: "text-muted-foreground",
+  error: "text-red-400",
+  warning: "text-amber-400",
+  info: "text-zinc-400",
 };
 
 const typePrefixes: Record<LogEntry["type"], string> = {
@@ -42,35 +42,46 @@ export function ConsoleLog({ logs, onClear, className }: ConsoleLogProps) {
     <div className={cn("relative group", className)}>
       <div
         ref={scrollRef}
-        className="h-[200px] md:h-[260px] overflow-y-auto rounded-lg p-3 bg-background border border-border font-mono text-[10px] md:text-xs leading-relaxed"
+        className={cn(
+          "h-[200px] md:h-[260px] overflow-y-auto rounded-lg p-3",
+          "bg-[#0c100d] border border-sena-green/20",
+          "font-mono text-[10px] md:text-xs leading-relaxed",
+          /* scrollbar */
+          "[&::-webkit-scrollbar]:w-1.5",
+          "[&::-webkit-scrollbar-track]:bg-transparent",
+          "[&::-webkit-scrollbar-thumb]:bg-sena-green/20",
+          "[&::-webkit-scrollbar-thumb:hover]:bg-sena-green/40"
+        )}
       >
         {logs.length === 0 ? (
-          <span className="text-muted-foreground/40">
-            {"// Esperando actividad del sensor..."}
+          <span className="text-sena-green/30 flex items-center gap-1.5">
+            <span className="animate-pulse">▋</span>
+            <span>Esperando actividad del sensor...</span>
           </span>
         ) : (
           logs.map((entry, i) => (
-            <div key={i} className="flex gap-1.5">
-              <span className="text-muted-foreground/50 flex-shrink-0">
+            <div key={i} className="flex gap-1.5 hover:bg-white/[0.03] px-0.5 rounded">
+              <span className="text-zinc-600 flex-shrink-0 tabular-nums">
                 [{entry.timestamp}]
               </span>
-              <span className={cn("flex-shrink-0", typeColors[entry.type])}>
+              <span className={cn("flex-shrink-0 font-semibold", typeColors[entry.type])}>
                 {typePrefixes[entry.type]}
               </span>
-              <span className={typeColors[entry.type]}>{entry.message}</span>
+              <span className={cn(typeColors[entry.type], "opacity-90")}>
+                {entry.message}
+              </span>
             </div>
           ))
         )}
       </div>
 
-      {/* Botón limpiar */}
       {logs.length > 0 && (
         <button
           onClick={onClear}
-          className="absolute top-2 right-2 p-1 rounded-md bg-muted/80 border border-border opacity-0 group-hover:opacity-100 transition-opacity hover:bg-muted cursor-pointer"
+          className="absolute top-2 right-2 p-1 rounded-md bg-zinc-800/80 border border-zinc-700 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-zinc-700 cursor-pointer"
           title="Limpiar consola"
         >
-          <X className="w-3 h-3 text-muted-foreground" />
+          <X className="w-3 h-3 text-zinc-400" />
         </button>
       )}
     </div>

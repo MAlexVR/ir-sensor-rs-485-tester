@@ -25,16 +25,16 @@ function TemperatureChart({
 }) {
   const w = 560;
   const h = 140;
-  const pad = { t: 8, r: 8, b: 22, l: 42 };
+  const pad = { t: 10, r: 10, b: 24, l: 44 };
   const pw = w - pad.l - pad.r;
   const ph = h - pad.t - pad.b;
 
   if (!data.length) {
     return (
-      <div className="flex items-center justify-center h-[120px] rounded-lg border border-dashed border-border">
+      <div className="flex items-center justify-center h-[120px] rounded-lg border border-dashed border-sena-green/20 bg-[#0c100d]">
         <div className="text-center">
-          <Activity className="w-5 h-5 text-muted-foreground/30 mx-auto mb-1" />
-          <p className="text-xs text-muted-foreground/50 font-mono">
+          <Activity className="w-5 h-5 text-sena-green/20 mx-auto mb-1.5" />
+          <p className="text-xs text-zinc-600 font-mono">
             Sin datos — inicie lectura
           </p>
         </div>
@@ -52,75 +52,81 @@ function TemperatureChart({
     y: pad.t + ph - ((d.temp - mn) / rg) * ph,
   }));
 
-  const line = pts
-    .map((p, i) => `${i ? "L" : "M"} ${p.x} ${p.y}`)
-    .join(" ");
+  const line = pts.map((p, i) => `${i ? "L" : "M"} ${p.x} ${p.y}`).join(" ");
   const area =
     line +
     ` L${pts[pts.length - 1].x} ${pad.t + ph} L${pts[0].x} ${pad.t + ph}Z`;
 
   return (
-    <svg
-      width="100%"
-      viewBox={`0 0 ${w} ${h}`}
-      className="block"
-      role="img"
-      aria-label="Historial de temperatura"
-    >
-      <defs>
-        <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#50e5f9" stopOpacity="0.2" />
-          <stop offset="100%" stopColor="#50e5f9" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      {/* Grid lines */}
-      {Array.from({ length: 5 }, (_, i) => mn + (rg / 4) * i).map(
-        (v, i) => {
+    <div className="rounded-lg overflow-hidden bg-[#0c100d] border border-sena-green/15 p-1">
+      <svg
+        width="100%"
+        viewBox={`0 0 ${w} ${h}`}
+        className="block"
+        role="img"
+        aria-label="Historial de temperatura"
+      >
+        <defs>
+          <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#39a900" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="#39a900" stopOpacity="0.02" />
+          </linearGradient>
+          <filter id="lineglow">
+            <feGaussianBlur stdDeviation="1.5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* Background grid */}
+        {Array.from({ length: 5 }, (_, i) => mn + (rg / 4) * i).map((v, i) => {
           const y = pad.t + ph - ((v - mn) / rg) * ph;
           return (
             <g key={i}>
               <line
-                x1={pad.l}
-                y1={y}
-                x2={w - pad.r}
-                y2={y}
-                stroke="currentColor"
-                strokeWidth="0.5"
-                className="text-border"
+                x1={pad.l} y1={y} x2={w - pad.r} y2={y}
+                stroke="#39a900" strokeWidth="0.4" strokeOpacity="0.15"
+                strokeDasharray="4 4"
               />
               <text
-                x={pad.l - 5}
-                y={y + 3}
+                x={pad.l - 6} y={y + 3}
                 textAnchor="end"
-                className="fill-muted-foreground/50 font-mono"
-                style={{ fontSize: 8 }}
+                fill="#4a5568"
+                style={{ fontSize: 8, fontFamily: "monospace" }}
               >
                 {v.toFixed(0)}
               </text>
             </g>
           );
-        }
-      )}
-      {/* Area fill */}
-      <path d={area} fill="url(#chartGrad)" />
-      {/* Line */}
-      <path
-        d={line}
-        fill="none"
-        stroke="#50e5f9"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-      {/* Current point */}
-      <circle
-        cx={pts[pts.length - 1].x}
-        cy={pts[pts.length - 1].y}
-        r="3.5"
-        fill="#50e5f9"
-        stroke="hsl(var(--card))"
-        strokeWidth="2"
-      />
-    </svg>
+        })}
+
+        {/* Area fill */}
+        <path d={area} fill="url(#chartGrad)" />
+
+        {/* Main line with glow */}
+        <path
+          d={line}
+          fill="none"
+          stroke="#39a900"
+          strokeWidth="1.8"
+          strokeLinejoin="round"
+          filter="url(#lineglow)"
+        />
+
+        {/* Current point */}
+        <circle
+          cx={pts[pts.length - 1].x}
+          cy={pts[pts.length - 1].y}
+          r="4"
+          fill="#39a900"
+          stroke="#0c100d"
+          strokeWidth="2"
+          filter="url(#lineglow)"
+        />
+      </svg>
+    </div>
   );
 }
 
@@ -151,11 +157,11 @@ export function TemperaturePanel({
 
   return (
     <div className="space-y-3 md:space-y-4">
-      {/* ─── Display 7 segmentos ─── */}
-      <Card className="glass">
-        <CardHeader className="pb-2">
+      {/* ─── Display temperatura ─── */}
+      <Card className="overflow-hidden border-sena-green/20 bg-card">
+        <CardHeader className="pb-2 border-b border-sena-green/10">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-sm flex items-center gap-2">
+            <CardTitle className="text-sm flex items-center gap-2 text-sena-blue">
               <Activity className="w-4 h-4 text-sena-green" />
               Temperatura en Tiempo Real
             </CardTitle>
@@ -165,6 +171,7 @@ export function TemperaturePanel({
                 size="icon-sm"
                 onClick={onClearData}
                 title="Resetear mediciones"
+                className="text-muted-foreground hover:text-sena-blue"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
               </Button>
@@ -173,13 +180,14 @@ export function TemperaturePanel({
                 size="icon-sm"
                 onClick={onClearAll}
                 title="Limpiar todo"
+                className="text-muted-foreground hover:text-red-400"
               >
                 <Trash2 className="w-3.5 h-3.5" />
               </Button>
             </div>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-3">
           <SevenSegmentDisplay value={temperature} />
         </CardContent>
       </Card>
@@ -229,27 +237,34 @@ export function TemperaturePanel({
       </div>
 
       {/* ─── Historial gráfico ─── */}
-      <Card className="glass">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm flex items-center gap-2">
-            <Activity className="w-4 h-4 text-sena-cyan" />
-            Historial
+      <Card className="border-sena-green/20 bg-card">
+        <CardHeader className="pb-2 border-b border-sena-green/10">
+          <CardTitle className="text-sm flex items-center gap-2 text-sena-blue">
+            <Activity className="w-4 h-4 text-sena-green" />
+            Historial de Temperatura
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-3">
           <TemperatureChart data={stats.history} />
         </CardContent>
       </Card>
 
       {/* ─── Consola RS-485 ─── */}
-      <Card className="glass">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm flex items-center gap-2">
-            <Radio className="w-4 h-4 text-sena-purple" />
-            Consola RS-485
-          </CardTitle>
+      <Card className="border-sena-green/20 bg-card">
+        <CardHeader className="pb-2 border-b border-sena-green/10">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-sm flex items-center gap-2 text-sena-blue">
+              <Radio className="w-4 h-4 text-sena-green" />
+              Consola RS-485
+            </CardTitle>
+            <div className="flex items-center gap-2">
+              <span className="text-[9px] font-mono text-sena-yellow/60 bg-sena-yellow/5 border border-sena-yellow/15 px-1.5 py-0.5 rounded">TX</span>
+              <span className="text-[9px] font-mono text-sena-cyan/60 bg-sena-cyan/5 border border-sena-cyan/15 px-1.5 py-0.5 rounded">RX</span>
+              <span className="text-[9px] font-mono text-sena-green/60 bg-sena-green/5 border border-sena-green/15 px-1.5 py-0.5 rounded">OK</span>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-3">
           <ConsoleLog logs={logs} onClear={onClearLogs} />
         </CardContent>
       </Card>

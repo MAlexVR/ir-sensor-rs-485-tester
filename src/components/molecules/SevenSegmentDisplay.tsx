@@ -8,85 +8,79 @@ interface SevenSegmentDisplayProps {
   className?: string;
 }
 
-/**
- * Display tipo 7-segmentos para temperatura.
- * Usa DSEG7 font con fallback a JetBrains Mono.
- * Muestra fondo tenue "888.88" como segments apagados.
- */
+/** Color del display según rango de temperatura */
+function getTempColor(v: number | null): string {
+  if (v === null) return "text-zinc-600";
+  if (v < 50) return "text-sena-cyan";
+  if (v < 150) return "text-sena-green";
+  if (v < 350) return "text-sena-yellow";
+  return "text-red-400";
+}
+
+function getTempGlow(v: number | null): string {
+  if (v === null) return "";
+  if (v < 50) return "drop-shadow-[0_0_8px_#50e5f9]";
+  if (v < 150) return "drop-shadow-[0_0_8px_#39a900]";
+  if (v < 350) return "drop-shadow-[0_0_8px_#fdc300]";
+  return "drop-shadow-[0_0_8px_#f87171]";
+}
+
 export function SevenSegmentDisplay({
   value,
   unit = "°C",
   className,
 }: SevenSegmentDisplayProps) {
-  const displayValue = value !== null ? value.toFixed(1) : "---.-";
-
-  // Color basado en temperatura
-  const getColor = (v: number | null) => {
-    if (v === null) return "text-muted-foreground/60";
-    if (v < 50) return "text-sena-cyan";
-    if (v < 150) return "text-sena-green";
-    if (v < 350) return "text-sena-yellow";
-    return "text-destructive";
-  };
+  const displayValue = value !== null ? value.toFixed(1) : "--.-";
+  const color = getTempColor(value);
+  const glow = getTempGlow(value);
 
   return (
     <div
       className={cn(
-        "relative rounded-2xl overflow-hidden",
-        "bg-gradient-to-b from-card to-background",
-        "border border-border/50",
+        "relative rounded-xl overflow-hidden",
+        "bg-[#0a0f0a] border border-sena-green/20",
         "p-4 md:p-6",
         className
       )}
     >
-      {/* Fondo decorativo */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-sena-green/5 via-transparent to-transparent" />
+      {/* Fondo decorativo sutil */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_#39a90008_0%,_transparent_70%)]" />
 
       {/* Label */}
-      <p className="relative text-[10px] md:text-xs text-muted-foreground font-mono uppercase tracking-widest mb-2 md:mb-3">
+      <p className="relative text-[10px] md:text-xs text-zinc-500 font-mono uppercase tracking-[0.2em] mb-3 md:mb-4">
         Temperatura medida
       </p>
 
-      {/* Display principal */}
-      <div className="relative flex items-baseline gap-2 md:gap-3">
-        {/* Segmentos apagados (ghost) */}
-        <span className="absolute font-7seg text-4xl md:text-6xl lg:text-7xl text-muted/20 select-none pointer-events-none tracking-wider">
-          888.8
-        </span>
-
-        {/* Valor real */}
+      {/* Número principal */}
+      <div className="relative flex items-baseline gap-3 md:gap-4">
         <span
           className={cn(
-            "relative font-7seg text-4xl md:text-6xl lg:text-7xl font-bold tracking-wider transition-colors duration-300",
-            getColor(value),
+            "font-mono font-bold tracking-tight transition-colors duration-300",
+            "text-5xl md:text-7xl lg:text-8xl",
+            color,
+            glow,
             value !== null && "animate-segment-glow"
           )}
         >
           {displayValue}
         </span>
-
-        {/* Unidad */}
-        <span className="relative text-lg md:text-2xl text-muted-foreground font-mono">
+        <span className={cn("font-mono text-xl md:text-3xl", color, "opacity-70")}>
           {unit}
         </span>
       </div>
 
-      {/* Barra de rango visual */}
+      {/* Barra de rango */}
       {value !== null && (
-        <div className="relative mt-3 md:mt-4">
-          <div className="h-1.5 rounded-full bg-muted/50 overflow-hidden">
+        <div className="relative mt-4 md:mt-5">
+          <div className="h-1 rounded-full bg-zinc-800 overflow-hidden">
             <div
-              className="h-full rounded-full transition-all duration-500 ease-out bg-gradient-to-r from-sena-cyan via-sena-green via-sena-yellow to-destructive"
+              className="h-full rounded-full transition-all duration-500 ease-out bg-gradient-to-r from-sena-cyan via-sena-green via-sena-yellow to-red-400"
               style={{ width: `${Math.min(100, (value / 500) * 100)}%` }}
             />
           </div>
-          <div className="flex justify-between mt-1">
-            <span className="text-[9px] text-muted-foreground font-mono">
-              0°C
-            </span>
-            <span className="text-[9px] text-muted-foreground font-mono">
-              500°C
-            </span>
+          <div className="flex justify-between mt-1.5">
+            <span className="text-[9px] text-zinc-600 font-mono">0°C</span>
+            <span className="text-[9px] text-zinc-600 font-mono">500°C</span>
           </div>
         </div>
       )}
