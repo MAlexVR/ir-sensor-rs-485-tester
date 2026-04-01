@@ -171,7 +171,7 @@ export function TemperaturePanel({
                 size="icon-sm"
                 onClick={onClearData}
                 title="Resetear mediciones"
-                className="text-muted-foreground hover:text-sena-blue"
+                className="text-sena-green hover:bg-sena-green hover:text-white"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
               </Button>
@@ -180,7 +180,7 @@ export function TemperaturePanel({
                 size="icon-sm"
                 onClick={onClearAll}
                 title="Limpiar todo"
-                className="text-muted-foreground hover:text-red-400"
+                className="text-sena-green hover:bg-sena-green hover:text-white"
               >
                 <Trash2 className="w-3.5 h-3.5" />
               </Button>
