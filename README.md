@@ -1,20 +1,22 @@
 # IR Sensor RS-485 Tester — SENA CEET
 
-![versión](https://img.shields.io/badge/versión-1.1.0-sena--green?color=39a900)
-![Next.js](https://img.shields.io/badge/Next.js-15-black)
-![Tailwind](https://img.shields.io/badge/Tailwind-3-38bdf8)
+![versión](https://img.shields.io/badge/versión-1.2.0-sena--green?color=39a900)
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![Tailwind](https://img.shields.io/badge/Tailwind-4-38bdf8)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-3178c6)
 ![licencia](https://img.shields.io/badge/licencia-MIT-green)
 
 Aplicación web mobile-first para prueba y diagnóstico de termómetros infrarrojos industriales con interfaz RS-485, usando la **Web Serial API** directamente desde el navegador, sin backend ni software adicional.
 
 ## Stack Tecnológico
 
-- **Next.js 15** App Router con TypeScript
-- **Tailwind CSS v3** + **shadcn/ui** (Radix UI)
+- **Next.js 16** App Router con TypeScript 6
+- **Tailwind CSS v4** (CSS-first, `@theme {}`) + **shadcn/ui** (Radix UI)
 - **Atomic Design** (atoms → molecules → organisms → templates)
 - **Web Serial API** (sin backend)
-- **Lucide React** (iconos)
+- **Lucide React 1.x** (iconos)
 - **Work Sans** + **JetBrains Mono** (tipografía institucional SENA)
+- **tw-animate-css** (animaciones Tailwind v4)
 
 ## Paleta Institucional SENA
 
@@ -93,7 +95,7 @@ npm run build && npm start
 ```
 src/
 ├── app/
-│   ├── globals.css          # Variables CSS SENA, light mode, scrollbar verde, 7-seg font
+│   ├── globals.css          # Tailwind v4: @theme SENA, @utility, animaciones, scrollbar
 │   ├── layout.tsx           # Work Sans + JetBrains Mono, light mode
 │   └── page.tsx             # Entry point
 ├── components/
@@ -109,7 +111,7 @@ src/
 │   ├── protocol.ts          # Builder/parser de tramas RS-485
 │   └── utils.ts             # cn(), serialTimestamp()
 └── types/
-    └── serial.ts            # Interfaces TypeScript
+    └── serial.ts            # Interfaces TypeScript (tipos de configuración serial)
 ```
 
 ## Uso
