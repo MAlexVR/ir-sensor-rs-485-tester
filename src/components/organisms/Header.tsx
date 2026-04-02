@@ -82,7 +82,7 @@ export function Header({ onAboutClick }: HeaderProps) {
           className="md:hidden bg-sena-green border-t border-white/20 mt-3 pt-2 animate-in slide-in-from-top-2"
         >
           <div className="space-y-1">
-            <UserManualModal triggerClassName="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-white/90 hover:bg-white/10 transition-colors h-auto">
+            <UserManualModal triggerClassName="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-white/90 hover:bg-white/10 transition-colors">
               <HelpCircle size={18} className="text-white/70" />
               <span>Manual de Uso</span>
             </UserManualModal>
