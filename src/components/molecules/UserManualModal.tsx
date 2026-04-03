@@ -13,6 +13,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { Modal } from "@/components/atoms/Modal";
+import { APP_CONFIG, INSTITUTION_CONFIG } from "@/config/app.config";
 
 interface UserManualModalProps {
   triggerClassName?: string;
@@ -57,7 +58,7 @@ export function UserManualModal({
         }
         footer={
           <span className="text-[10px] text-gray-400">
-            Versión 1.1 · SENA CEET — LEPS
+            {APP_CONFIG.versionBadge} · {INSTITUTION_CONFIG.headerBrand}
           </span>
         }
       >

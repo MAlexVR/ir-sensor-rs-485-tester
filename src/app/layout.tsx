@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Work_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { APP_CONFIG, INSTITUTION_CONFIG } from "@/config/app.config";
 
 const workSans = Work_Sans({
   subsets: ["latin"],
@@ -16,9 +17,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "IR Sensor RS-485 Tester | SENA CEET",
-  description:
-    "Aplicación web para prueba y diagnóstico de termómetros infrarrojos con protocolo RS-485 propietario. Centro de Electricidad, Electrónica y Telecomunicaciones — SENA.",
+  title: `${APP_CONFIG.name} | ${INSTITUTION_CONFIG.nameShort} ${INSTITUTION_CONFIG.centerShort}`,
+  description: APP_CONFIG.description,
   keywords: [
     "termómetro infrarrojo",
     "RS-485",

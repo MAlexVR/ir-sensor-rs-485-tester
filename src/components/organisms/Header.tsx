@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Info, Menu, X, HelpCircle } from "lucide-react";
 import { UserManualModal } from "@/components/molecules/UserManualModal";
+import { INSTITUTION_CONFIG } from "@/config/app.config";
 
 interface HeaderProps {
   onAboutClick?: () => void;
@@ -36,7 +37,7 @@ export function Header({ onAboutClick }: HeaderProps) {
               IR Sensor RS-485 Tester
             </h1>
             <p className="text-[10px] sm:text-xs text-white/80 hidden md:block mt-0.5 font-medium truncate">
-              Termómetro Infrarrojo · SENA CEET
+              {INSTITUTION_CONFIG.headerSubtitle}
             </p>
           </div>
         </div>
@@ -96,7 +97,7 @@ export function Header({ onAboutClick }: HeaderProps) {
             </button>
             <div className="flex items-center justify-between pt-3 pb-1 px-3 border-t border-white/20 mt-2">
               <span className="text-xs text-white/70 font-medium">
-                SENA — CEET
+                {INSTITUTION_CONFIG.headerBrand}
               </span>
               <span className="text-[10px] font-medium bg-white/10 text-white/80 px-2 py-0.5 rounded-full border border-white/20">
                 v1.1

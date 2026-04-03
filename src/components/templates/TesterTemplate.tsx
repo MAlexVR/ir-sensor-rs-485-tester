@@ -22,6 +22,7 @@ import { WiringPanel, SpecsPanel } from "@/components/organisms/WiringPanel";
 import { PermissionsModal } from "@/components/molecules/PermissionsModal";
 import { useSerialPort } from "@/hooks/useSerialPort";
 import { cn, serialTimestamp } from "@/lib/utils";
+import { INSTITUTION_CONFIG } from "@/config/app.config";
 import type { LogEntry } from "@/types/serial";
 
 /* ─── Toggle switch ─── */
@@ -498,12 +499,12 @@ export function TesterTemplate() {
             </div>
             <div>
               <h3 className="font-semibold mb-2 text-sena-green">Créditos</h3>
-              <p className="text-xs md:text-sm text-muted-foreground">
-                <strong className="text-foreground">Institución:</strong> Centro
-                de Electricidad, Electrónica y Telecomunicaciones (CEET)
+              <p className="text-xs md:text-sm text-gray-500">
+                <strong className="text-gray-700">Institución:</strong>{" "}
+                {INSTITUTION_CONFIG.centerFull}
               </p>
-              <p className="text-xs md:text-sm text-muted-foreground mt-1">
-                Servicio Nacional de Aprendizaje — SENA
+              <p className="text-xs md:text-sm text-gray-500 mt-1">
+                {INSTITUTION_CONFIG.nameFull}
               </p>
               <p className="text-xs md:text-sm text-muted-foreground mt-1">
                 <strong className="text-foreground">Programa:</strong>{" "}
