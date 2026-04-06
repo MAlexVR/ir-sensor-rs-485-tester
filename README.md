@@ -140,4 +140,4 @@ Active la **Configuración avanzada** en Ajustes y presione **"Modo Demo"** para
 
 **Centro de Electricidad, Electrónica y Telecomunicaciones (CEET)**  
 Servicio Nacional de Aprendizaje — SENA — Bogotá, Colombia  
-Laboratorio de Electrónica, Potencia y Sistemas — LEPS
+Laboratorio de Ensayos para Paneles Solares — LEPS
