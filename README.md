@@ -1,10 +1,14 @@
 # IR Sensor RS-485 Tester — SENA CEET
 
-![versión](https://img.shields.io/badge/versión-1.2.0-sena--green?color=39a900)
-![Next.js](https://img.shields.io/badge/Next.js-16-black)
-![Tailwind](https://img.shields.io/badge/Tailwind-4-38bdf8)
-![TypeScript](https://img.shields.io/badge/TypeScript-6-3178c6)
-![licencia](https://img.shields.io/badge/licencia-MIT-green)
+![SENA](https://img.shields.io/badge/SENA-CEET-39A900?style=flat-square)
+![versión](https://img.shields.io/badge/v-1.2.0-39A900?style=flat-square)
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?style=flat-square&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38BDF8?style=flat-square&logo=tailwindcss)
+![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Radix-000000?style=flat-square)
+![Lucide](https://img.shields.io/badge/Lucide-1.x-FF6E3F?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSiTMTIgMmE3IDcgMCAwIDAgLTcgN2MwIDMuMjIgMS45NCA1Ljk4IDQuNzEgNi45M0wxMiAyMmwzLjI5LTMuMDdBMjEuOTggMjEuOTggMCAwIDAgMTkgOWE3IDcgMCAwIDAtNy03eiIvPjwvc3ZnPg==)
+![licencia](https://img.shields.io/badge/licencia-MIT-green?style=flat-square)
 
 Aplicación web mobile-first para prueba y diagnóstico de termómetros infrarrojos industriales con interfaz RS-485, usando la **Web Serial API** directamente desde el navegador, sin backend ni software adicional.
 
